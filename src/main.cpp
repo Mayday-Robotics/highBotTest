@@ -95,15 +95,15 @@ void usercontrol(void) {
       driveTrain.drive(forward);
     } else if (primaryController.Axis3.position() < 0) {
       driveTrain.drive(reverse);
-    } else {
-      driveTrain.stop();
     }
 
     if (primaryController.Axis2.position() > 0) {
       driveTrain.turn(right);
     } else if (primaryController.Axis2.position() < 0) {
       driveTrain.turn(left);
-    } else {
+    } 
+
+    if (primaryController.Axis2.position() == 0 && primaryController.Axis3.position() == 0) {
       driveTrain.stop();
     }
 
