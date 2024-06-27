@@ -94,7 +94,7 @@ void displayMotorTemperature() {
     primaryController.Screen.setCursor(3, 1);
     primaryController.Screen.print("BL: %.1fC BR: %.1fC", backLeftMotor.temperature(temperatureUnits::celsius), backRightMotor.temperature(temperatureUnits::celsius));
 
-    vex::this_thread::sleep_for(3000);
+    this_thread::sleep_for(3000);
   }
 }
 
@@ -202,7 +202,7 @@ int main() {
   // Run the pre-autonomous function.
   pre_auton();
 
-  thread lcdThread = thread(displayMotorTemperature);
+  thread lcdThread(displayMotorTemperature);
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
