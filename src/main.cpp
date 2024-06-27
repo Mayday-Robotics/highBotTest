@@ -99,6 +99,12 @@ void autonomous(void) {
 
 void usercontrol(void) {
   // User control code here, inside the loop
+
+  // Callback example
+  primaryController.ButtonA.pressed([]() {
+    std::cout << "A pressed" << std::endl;
+  });
+
   while (1) {
     driveTrain.setDriveVelocity(abs(primaryController.Axis3.position()), percent);
     driveTrain.setTurnVelocity(abs(primaryController.Axis2.position()), percent);
@@ -120,6 +126,8 @@ void usercontrol(void) {
       && primaryController.Axis4.position() == 0){
       driveTrain.stop();
     }
+
+
 
     // TODO: Ask if wants continuous push or once callbacks
     if (primaryController.ButtonR1.pressing()) {
@@ -152,10 +160,6 @@ void usercontrol(void) {
 
     if (primaryController.ButtonRight.pressing()) {
       std::cout << "Right pressed" << std::endl;
-    }
-
-    if (primaryController.ButtonA.pressing()) {
-      std::cout << "A pressed" << std::endl;
     }
 
     if (primaryController.ButtonB.pressing()) {
