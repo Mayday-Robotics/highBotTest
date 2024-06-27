@@ -31,8 +31,8 @@ controller primaryController;
 
 drivetrain driveTrain = drivetrain(leftDrive, rightDrive, 12.5664, 14, 13, inches, 1);
 
-// task lcdThread;
-// bool lcdThreadRunning = false;
+task lcdThread;
+bool lcdThreadRunning = false;
 
 double turnVelocity = 75;
 double driveVelocity = 100;
@@ -143,15 +143,15 @@ void usercontrol(void) {
   //   std::cout << "B pressed" << std::endl;
   // });
 
-  // primaryController.ButtonX.pressed([]() {
-  //   if (lcdThreadRunning) {
-  //     lcdThread.stop();
-  //     lcdThreadRunning = false;
-  //   } else {
-  //     lcdThread.resume();
-  //     lcdThreadRunning = true;
-  //   }
-  // });
+  primaryController.ButtonX.pressed([]() {
+    if (lcdThreadRunning) {
+      lcdThread.stop();
+      lcdThreadRunning = false;
+    } else {
+      lcdThread = task(displayMotorTemperature);
+      lcdThreadRunning = true;
+    }
+  });
 
   // primaryController.ButtonY.pressed([]() {
   //   std::cout << "Y pressed" << std::endl;
@@ -229,9 +229,6 @@ int main() {
 
   // Run the pre-autonomous function.
   pre_auton();
-
-  // lcdThread = task(displayMotorTemperature);
-  // lcdThread.stop();
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
