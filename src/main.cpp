@@ -35,9 +35,6 @@ drivetrain driveTrain = drivetrain(leftDrive, rightDrive, 12.5664, 14, 13, inche
 // 14 inch distance between wheels
 // 13 inch wheel base
 
-
-
-
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
 /*                                                                           */
@@ -94,7 +91,7 @@ void displayMotorTemperature() {
     primaryController.Screen.setCursor(3, 1);
     primaryController.Screen.print("BL: %.1fC BR: %.1fC", backLeftMotor.temperature(temperatureUnits::celsius), backRightMotor.temperature(temperatureUnits::celsius));
 
-    this_thread::sleep_for(3000);
+    this_thread::sleep_for(5000);
   }
 }
 
@@ -165,7 +162,7 @@ void usercontrol(void) {
     int axis3 = primaryController.Axis3.position();
 
     driveTrain.setDriveVelocity(abs(axis3), percent);
-    driveTrain.setTurnVelocity(abs(axis2), percent);
+    driveTrain.setTurnVelocity(abs(axis2) / 2, percent);
 
     if (axis3 > 0) {
       driveTrain.drive(forward);
