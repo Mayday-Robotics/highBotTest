@@ -106,24 +106,28 @@ void usercontrol(void) {
   });
 
   while (1) {
-    driveTrain.setDriveVelocity(abs(primaryController.Axis3.position()), percent);
-    driveTrain.setTurnVelocity(abs(primaryController.Axis2.position()), percent);
+    int axis2 = primaryController.Axis2.position();
+    int axis3 = primaryController.Axis3.position();
+    int axis4 = primaryController.Axis4.position();
 
-    if (primaryController.Axis3.position() > 0) {
+    driveTrain.setDriveVelocity(abs(axis3), percent);
+    driveTrain.setTurnVelocity(abs(axis2), percent);
+
+    if (axis3 > 0) {
       driveTrain.drive(forward);
-    } else if (primaryController.Axis3.position() < 0) {
+    } else if (axis3 < 0) {
       driveTrain.drive(reverse);
     }
 
-    if (primaryController.Axis2.position() > 0) {
+    if (axis2 > 0) {
       driveTrain.turn(right);
-    } else if (primaryController.Axis2.position() < 0) {
+    } else if (axis2 < 0) {
       driveTrain.turn(left);
     } 
 
-    if (primaryController.Axis2.position() == 0 
-      && primaryController.Axis3.position() == 0
-      && primaryController.Axis4.position() == 0){
+    if (axis2== 0 
+      && axis3 == 0
+      && axis3 == 0){
       driveTrain.stop();
     }
 
