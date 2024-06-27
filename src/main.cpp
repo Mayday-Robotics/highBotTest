@@ -31,11 +31,11 @@ controller primaryController;
 
 drivetrain driveTrain = drivetrain(leftDrive, rightDrive, 12.5664, 14, 13, inches, 1);
 
-task lcdThread;
-bool lcdThreadRunning = false;
+// task lcdThread;
+// bool lcdThreadRunning = false;
 
-int turnVelocity = 75;
-int driveVelocity = 100;
+double turnVelocity = 75;
+double driveVelocity = 100;
 
 // 4 inch wheels
 // 14 inch distance between wheels
@@ -103,6 +103,14 @@ int displayMotorTemperature(void) {
   return 0;
 }
 
+void updateVelocityScreen() {
+  primaryController.Screen.clearScreen();
+  primaryController.Screen.setCursor(1, 1);
+  primaryController.Screen.print("Drive Velocity: %.1f%%", driveVelocity);
+  primaryController.Screen.setCursor(2, 1);
+  primaryController.Screen.print("Turn Velocity: %.1f%%", turnVelocity);
+}
+
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                              User Control Task                            */
@@ -124,6 +132,8 @@ int displayMotorTemperature(void) {
 void usercontrol(void) {
   // User control code here, inside the loop
 
+  
+
   // Callback example
   // primaryController.ButtonA.pressed([]() {
   //   std::cout << "A pressed" << std::endl;
@@ -133,15 +143,15 @@ void usercontrol(void) {
   //   std::cout << "B pressed" << std::endl;
   // });
 
-  primaryController.ButtonX.pressed([]() {
-    if (lcdThreadRunning) {
-      lcdThread.stop();
-      lcdThreadRunning = false;
-    } else {
-      lcdThread.resume();
-      lcdThreadRunning = true;
-    }
-  });
+  // primaryController.ButtonX.pressed([]() {
+  //   if (lcdThreadRunning) {
+  //     lcdThread.stop();
+  //     lcdThreadRunning = false;
+  //   } else {
+  //     lcdThread.resume();
+  //     lcdThreadRunning = true;
+  //   }
+  // });
 
   // primaryController.ButtonY.pressed([]() {
   //   std::cout << "Y pressed" << std::endl;
@@ -161,26 +171,30 @@ void usercontrol(void) {
 
   primaryController.ButtonUp.pressed([]() {
     driveVelocity += 5;
+    updateVelocityScreen();
   });
 
   primaryController.ButtonDown.pressed([]() {
     driveVelocity -= 5;
+    updateVelocityScreen();
   });
 
   primaryController.ButtonLeft.pressed([]() {
     turnVelocity -= 5;
+    updateVelocityScreen();
   });
 
   primaryController.ButtonRight.pressed([]() {
     turnVelocity += 5;
+    updateVelocityScreen();
   });
 
   while (1) {
     int axis2 = primaryController.Axis2.position();
     int axis3 = primaryController.Axis3.position();
 
-    driveTrain.setDriveVelocity(driveVelocity, percent);
-    driveTrain.setTurnVelocity(turnVelocity, percent);
+    driveTrain.setDriveVelocity(abs(axis3) * (driveVelocity / 100), percent);
+    driveTrain.setTurnVelocity(abs(axis2) * (turnVelocity / 100), percent);
 
     if (axis3 > 0) {
       driveTrain.drive(forward);
@@ -216,8 +230,8 @@ int main() {
   // Run the pre-autonomous function.
   pre_auton();
 
-  lcdThread = task(displayMotorTemperature);
-  lcdThread.stop();
+  // lcdThread = task(displayMotorTemperature);
+  // lcdThread.stop();
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
