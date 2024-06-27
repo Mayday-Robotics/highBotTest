@@ -15,13 +15,13 @@ using namespace vex;
 competition Competition;
 brain Brain;
 
-motor frontRightMotor(PORT1, ratio18_1, false);
-motor middleRightMotor(PORT2, ratio18_1, false);
-motor backRightMotor(PORT3, ratio18_1, false);
+motor frontRightMotor(PORT1, ratio18_1, true);
+motor middleRightMotor(PORT2, ratio18_1, true);
+motor backRightMotor(PORT3, ratio18_1, true);
 
-motor frontLeftMotor(PORT4, ratio18_1, true);
-motor middleLeftMotor(PORT5, ratio18_1, true);
-motor backLeftMotor(PORT6, ratio18_1, true);
+motor frontLeftMotor(PORT4, ratio18_1, false);
+motor middleLeftMotor(PORT5, ratio18_1, false);
+motor backLeftMotor(PORT6, ratio18_1, false);
 
 motor_group rightDrive(frontRightMotor, middleRightMotor, backRightMotor);
 motor_group leftDrive(frontLeftMotor, middleLeftMotor, backLeftMotor);
@@ -89,7 +89,7 @@ void usercontrol(void) {
   // User control code here, inside the loop
   while (1) {
     driveTrain.setDriveVelocity(abs(primaryController.Axis3.position()), percent);
-    driveTrain.setTurnVelocity(abs(primaryController.Axis4.position()), percent);
+    driveTrain.setTurnVelocity(abs(primaryController.Axis2.position()), percent);
 
     if (primaryController.Axis3.position() > 0) {
       driveTrain.drive(forward);
@@ -103,7 +103,9 @@ void usercontrol(void) {
       driveTrain.turn(left);
     } 
 
-    if (primaryController.Axis2.position() == 0 && primaryController.Axis3.position() == 0) {
+    if (primaryController.Axis2.position() == 0 
+      && primaryController.Axis3.position() == 0
+      && primaryController.Axis4.position() == 0){
       driveTrain.stop();
     }
 
