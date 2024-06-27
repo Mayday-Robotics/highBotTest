@@ -163,7 +163,6 @@ void usercontrol(void) {
   while (1) {
     int axis2 = primaryController.Axis2.position();
     int axis3 = primaryController.Axis3.position();
-    int axis4 = primaryController.Axis4.position();
 
     driveTrain.setDriveVelocity(abs(axis3), percent);
     driveTrain.setTurnVelocity(abs(axis2), percent);
