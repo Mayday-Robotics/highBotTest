@@ -34,6 +34,9 @@ drivetrain driveTrain = drivetrain(leftDrive, rightDrive, 12.5664, 14, 13, inche
 task lcdThread;
 bool lcdThreadRunning = false;
 
+int turnVelocity = 75;
+int driveVelocity = 100;
+
 // 4 inch wheels
 // 14 inch distance between wheels
 // 13 inch wheel base
@@ -156,28 +159,28 @@ void usercontrol(void) {
   //   std::cout << "R2 pressed" << std::endl;
   // });
 
-  // primaryController.ButtonUp.pressed([]() {
-  //   std::cout << "Up pressed" << std::endl;
-  // });
+  primaryController.ButtonUp.pressed([]() {
+    driveVelocity += 5;
+  });
 
-  // primaryController.ButtonDown.pressed([]() {
-  //   std::cout << "Down pressed" << std::endl;
-  // });
+  primaryController.ButtonDown.pressed([]() {
+    driveVelocity -= 5;
+  });
 
-  // primaryController.ButtonLeft.pressed([]() {
-  //   std::cout << "Left pressed" << std::endl;
-  // });
+  primaryController.ButtonLeft.pressed([]() {
+    turnVelocity -= 5;
+  });
 
-  // primaryController.ButtonRight.pressed([]() {
-  //   std::cout << "Right pressed" << std::endl;
-  // });
+  primaryController.ButtonRight.pressed([]() {
+    turnVelocity += 5;
+  });
 
   while (1) {
     int axis2 = primaryController.Axis2.position();
     int axis3 = primaryController.Axis3.position();
 
-    driveTrain.setDriveVelocity(abs(axis3), percent);
-    driveTrain.setTurnVelocity(abs(axis2) * 0.85, percent);
+    driveTrain.setDriveVelocity(driveVelocity, percent);
+    driveTrain.setTurnVelocity(turnVelocity, percent);
 
     if (axis3 > 0) {
       driveTrain.drive(forward);
