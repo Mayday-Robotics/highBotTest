@@ -8,6 +8,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "vex.h"
+#include <iostream>
 
 using namespace vex;
 
@@ -107,6 +108,54 @@ void usercontrol(void) {
       && primaryController.Axis3.position() == 0
       && primaryController.Axis4.position() == 0){
       driveTrain.stop();
+    }
+
+    if (primaryController.ButtonR1.pressing()) {
+      std::cout << "R1 pressed" << std::endl;
+    }
+
+    if (primaryController.ButtonR2.pressing()) {
+      std::cout << "R2 pressed" << std::endl;
+    }
+
+    if (primaryController.ButtonL1.pressing()) {
+      std::cout << "L1 pressed" << std::endl;
+    }
+
+    if (primaryController.ButtonL2.pressing()) {
+      std::cout << "L2 pressed" << std::endl;
+    }
+
+    if (primaryController.ButtonUp.pressing()) {
+      std::cout << "Up pressed" << std::endl;
+    }
+
+    if (primaryController.ButtonDown.pressing()) {
+      std::cout << "Down pressed" << std::endl;
+    }
+
+    if (primaryController.ButtonLeft.pressing()) {
+      std::cout << "Left pressed" << std::endl;
+    }
+
+    if (primaryController.ButtonRight.pressing()) {
+      std::cout << "Right pressed" << std::endl;
+    }
+
+    if (primaryController.ButtonA.pressing()) {
+      std::cout << "A pressed" << std::endl;
+    }
+
+    if (primaryController.ButtonB.pressing()) {
+      std::cout << "B pressed" << std::endl;
+    }
+
+    if (primaryController.ButtonX.pressing()) {
+      std::cout << "X pressed" << std::endl;
+    }
+
+    if (primaryController.ButtonY.pressing()) {
+      std::cout << "Y pressed" << std::endl;
     }
 
     wait(20, msec); 
