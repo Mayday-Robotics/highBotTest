@@ -116,49 +116,49 @@ void usercontrol(void) {
   // User control code here, inside the loop
 
   // Callback example
-  primaryController.ButtonA.pressed([]() {
-    std::cout << "A pressed" << std::endl;
-  });
+  // primaryController.ButtonA.pressed([]() {
+  //   std::cout << "A pressed" << std::endl;
+  // });
 
-  primaryController.ButtonB.pressed([]() {
-    std::cout << "B pressed" << std::endl;
-  });
+  // primaryController.ButtonB.pressed([]() {
+  //   std::cout << "B pressed" << std::endl;
+  // });
 
-  primaryController.ButtonX.pressed([]() {
-    std::cout << "X pressed" << std::endl;
-  });
+  // primaryController.ButtonX.pressed([]() {
+  //   std::cout << "X pressed" << std::endl;
+  // });
 
-  primaryController.ButtonY.pressed([]() {
-    std::cout << "Y pressed" << std::endl;
-  });
+  // primaryController.ButtonY.pressed([]() {
+  //   std::cout << "Y pressed" << std::endl;
+  // });
 
-  primaryController.ButtonL1.pressed([]() {
-    std::cout << "L1 pressed" << std::endl;
-  });
+  // primaryController.ButtonL1.pressed([]() {
+  //   std::cout << "L1 pressed" << std::endl;
+  // });
 
-  primaryController.ButtonL2.pressed([]() {
-    std::cout << "L2 pressed" << std::endl;
-  });
+  // primaryController.ButtonL2.pressed([]() {
+  //   std::cout << "L2 pressed" << std::endl;
+  // });
 
-  primaryController.ButtonR2.pressed([]() {
-    std::cout << "R2 pressed" << std::endl;
-  });
+  // primaryController.ButtonR2.pressed([]() {
+  //   std::cout << "R2 pressed" << std::endl;
+  // });
 
-  primaryController.ButtonUp.pressed([]() {
-    std::cout << "Up pressed" << std::endl;
-  });
+  // primaryController.ButtonUp.pressed([]() {
+  //   std::cout << "Up pressed" << std::endl;
+  // });
 
-  primaryController.ButtonDown.pressed([]() {
-    std::cout << "Down pressed" << std::endl;
-  });
+  // primaryController.ButtonDown.pressed([]() {
+  //   std::cout << "Down pressed" << std::endl;
+  // });
 
-  primaryController.ButtonLeft.pressed([]() {
-    std::cout << "Left pressed" << std::endl;
-  });
+  // primaryController.ButtonLeft.pressed([]() {
+  //   std::cout << "Left pressed" << std::endl;
+  // });
 
-  primaryController.ButtonRight.pressed([]() {
-    std::cout << "Right pressed" << std::endl;
-  });
+  // primaryController.ButtonRight.pressed([]() {
+  //   std::cout << "Right pressed" << std::endl;
+  // });
 
   while (1) {
     int axis2 = primaryController.Axis2.position();
@@ -186,7 +186,7 @@ void usercontrol(void) {
 
     // TODO: What the hell is moving left and right
 
-    wait(3, msec); 
+    wait(10, msec); 
   }
 }
 
