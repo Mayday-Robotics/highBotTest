@@ -84,22 +84,18 @@ void autonomous(void) {
 }
 
 void displayMotorTemperature() {
-  primaryController.Screen.clearScreen();
+  while (true) {
+    primaryController.Screen.clearScreen();
 
-  primaryController.Screen.setCursor(1, 1);
-  primaryController.Screen.print("FL: %.1fC", frontLeftMotor.temperature(temperatureUnits::celsius));
-  primaryController.Screen.setCursor(2, 1);
-  primaryController.Screen.print("ML: %.1fC", middleLeftMotor.temperature(temperatureUnits::celsius));
-  primaryController.Screen.setCursor(3, 1);
-  primaryController.Screen.print("BL: %.1fC", backLeftMotor.temperature(temperatureUnits::celsius));
-  
-  primaryController.Screen.setCursor(4, 1);
-  primaryController.Screen.print("FR: %.1fC", frontRightMotor.temperature(temperatureUnits::celsius));
-  primaryController.Screen.setCursor(5, 1);
-  primaryController.Screen.print("MR: %.1fC", middleRightMotor.temperature(temperatureUnits::celsius));
-  primaryController.Screen.setCursor(6, 1);
-  primaryController.Screen.print("BR: %.1fC", backRightMotor.temperature(temperatureUnits::celsius));
+    primaryController.Screen.setCursor(1, 1);
+    primaryController.Screen.print("FL: %.1fC FR: %.1fC", frontLeftMotor.temperature(temperatureUnits::celsius), frontRightMotor.temperature(temperatureUnits::celsius));
+    primaryController.Screen.setCursor(2, 1);
+    primaryController.Screen.print("ML: %.1fC MR: %.1fC", middleLeftMotor.temperature(temperatureUnits::celsius), middleRightMotor.temperature(temperatureUnits::celsius));
+    primaryController.Screen.setCursor(3, 1);
+    primaryController.Screen.print("BL: %.1fC BR: %.1fC", backLeftMotor.temperature(temperatureUnits::celsius), backRightMotor.temperature(temperatureUnits::celsius));
 
+    vex::task::sleep(3000);
+  }
 }
 
 /*---------------------------------------------------------------------------*/
@@ -186,17 +182,12 @@ void usercontrol(void) {
 
     // make button y brake
     if (primaryController.ButtonR1.pressing()) {
-      if (axis2 == 0) {
-        driveTrain.stop(brakeType::coast);
-      } else {
-        driveTrain.stop(brakeType::hold);
-      }
+      driveTrain.stop(brakeType::hold);
     }
 
     // TODO: What the hell is moving left and right
 
-    displayMotorTemperature();
-    wait(20, msec); 
+    wait(3, msec); 
   }
 }
 
@@ -210,6 +201,8 @@ int main() {
 
   // Run the pre-autonomous function.
   pre_auton();
+
+  thread lcdThread = thread(displayMotorTemperature);
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
