@@ -94,7 +94,7 @@ void displayMotorTemperature() {
     primaryController.Screen.setCursor(3, 1);
     primaryController.Screen.print("BL: %.1fC BR: %.1fC", backLeftMotor.temperature(temperatureUnits::celsius), backRightMotor.temperature(temperatureUnits::celsius));
 
-    vex::task::sleep(3000);
+    vex::this_thread::sleep_for(3000);
   }
 }
 
