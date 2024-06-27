@@ -174,6 +174,8 @@ void usercontrol(void) {
       std::cout << "Y pressed" << std::endl;
     }
 
+    // TODO: What the hell is moving left and right
+
     wait(20, msec); 
   }
 }
