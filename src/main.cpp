@@ -72,14 +72,21 @@ void autonomous(void) {
   // drive forward a foot, turn left 90 degrees, drive forward a foot and spin in a circle for 15s at max velocity
   driveTrain.setDriveVelocity(50, percent);
   driveTrain.setTurnVelocity(50, percent);
+  frontLeftMotor.setBrake(brakeType::hold);
+  frontRightMotor.setBrake(brakeType::hold);
+  middleLeftMotor.setBrake(brakeType::hold);
+  middleRightMotor.setBrake(brakeType::hold);
+  backLeftMotor.setBrake(brakeType::hold);
+  backRightMotor.setBrake(brakeType::hold);
 
-  driveTrain.driveFor(12, inches);
-  driveTrain.turnFor(left, 90, degrees);
-  driveTrain.driveFor(12, inches);
+  driveTrain.driveFor(12, inches, true);
+  driveTrain.stop();
+  driveTrain.turnFor(left, 110, degrees, true); // 55 degrees = 1/4 of circle
+  driveTrain.driveFor(12, inches, true);
 
-  driveTrain.setTurnVelocity(100, percent);
-  driveTrain.turn(right);
-  wait(15, sec);
+  // driveTrain.setTurnVelocity(100, percent);
+  // driveTrain.turn(right);
+  // wait(15, sec);
 
   driveTrain.stop();
 
