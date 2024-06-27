@@ -66,9 +66,20 @@ void pre_auton(void) {
 /*---------------------------------------------------------------------------*/
 
 void autonomous(void) {
-  // ..........................................................................
-  // Insert autonomous user code here.
-  // ..........................................................................
+  // drive forward a foot, turn left 90 degrees, drive forward a foot and spin in a circle for 15s at max velocity
+  driveTrain.setDriveVelocity(50, percent);
+  driveTrain.setTurnVelocity(50, percent);
+
+  driveTrain.driveFor(12, inches);
+  driveTrain.turnFor(left, 90, degrees);
+  driveTrain.driveFor(12, inches);
+
+  driveTrain.setTurnVelocity(100, percent);
+  driveTrain.turn(right);
+  wait(15, sec);
+
+  driveTrain.stop();
+
   return;
 }
 
