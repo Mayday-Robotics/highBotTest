@@ -95,7 +95,7 @@ void autonomous(void) {
 
 // axis 3 forward and backward
 // axis 4 left and right
-// axis 2 up right, down left
+// axis 2 up left, down right
 
 void usercontrol(void) {
   // User control code here, inside the loop
@@ -123,10 +123,6 @@ void usercontrol(void) {
 
   primaryController.ButtonL2.pressed([]() {
     std::cout << "L2 pressed" << std::endl;
-  });
-
-  primaryController.ButtonR1.pressed([]() {
-    std::cout << "R1 pressed" << std::endl;
   });
 
   primaryController.ButtonR2.pressed([]() {
@@ -164,17 +160,19 @@ void usercontrol(void) {
     }
 
     if (axis2 > 0) {
-      driveTrain.turn(right);
-    } else if (axis2 < 0) {
       driveTrain.turn(left);
+    } else if (axis2 < 0) {
+      driveTrain.turn(right);
     } 
 
-    if (axis2== 0 
-      && axis3 == 0
-      && axis3 == 0){
-      driveTrain.stop();
+    // make button y brake
+    if (primaryController.ButtonR1.pressing()) {
+      if (axis2 == 0) {
+        driveTrain.stop(brakeType::coast);
+      } else {
+        driveTrain.stop(brakeType::hold);
+      }
     }
-
 
     // TODO: What the hell is moving left and right
 
