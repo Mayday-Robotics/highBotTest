@@ -110,6 +110,7 @@ void usercontrol(void) {
       driveTrain.stop();
     }
 
+    // TODO: Ask if wants continuous push or once callbacks
     if (primaryController.ButtonR1.pressing()) {
       std::cout << "R1 pressed" << std::endl;
     }
