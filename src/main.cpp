@@ -105,6 +105,50 @@ void usercontrol(void) {
     std::cout << "A pressed" << std::endl;
   });
 
+  primaryController.ButtonB.pressed([]() {
+    std::cout << "B pressed" << std::endl;
+  });
+
+  primaryController.ButtonX.pressed([]() {
+    std::cout << "X pressed" << std::endl;
+  });
+
+  primaryController.ButtonY.pressed([]() {
+    std::cout << "Y pressed" << std::endl;
+  });
+
+  primaryController.ButtonL1.pressed([]() {
+    std::cout << "L1 pressed" << std::endl;
+  });
+
+  primaryController.ButtonL2.pressed([]() {
+    std::cout << "L2 pressed" << std::endl;
+  });
+
+  primaryController.ButtonR1.pressed([]() {
+    std::cout << "R1 pressed" << std::endl;
+  });
+
+  primaryController.ButtonR2.pressed([]() {
+    std::cout << "R2 pressed" << std::endl;
+  });
+
+  primaryController.ButtonUp.pressed([]() {
+    std::cout << "Up pressed" << std::endl;
+  });
+
+  primaryController.ButtonDown.pressed([]() {
+    std::cout << "Down pressed" << std::endl;
+  });
+
+  primaryController.ButtonLeft.pressed([]() {
+    std::cout << "Left pressed" << std::endl;
+  });
+
+  primaryController.ButtonRight.pressed([]() {
+    std::cout << "Right pressed" << std::endl;
+  });
+
   while (1) {
     int axis2 = primaryController.Axis2.position();
     int axis3 = primaryController.Axis3.position();
@@ -131,52 +175,6 @@ void usercontrol(void) {
       driveTrain.stop();
     }
 
-
-
-    // TODO: Ask if wants continuous push or once callbacks
-    if (primaryController.ButtonR1.pressing()) {
-      std::cout << "R1 pressed" << std::endl;
-    }
-
-    if (primaryController.ButtonR2.pressing()) {
-      std::cout << "R2 pressed" << std::endl;
-    }
-
-    if (primaryController.ButtonL1.pressing()) {
-      std::cout << "L1 pressed" << std::endl;
-    }
-
-    if (primaryController.ButtonL2.pressing()) {
-      std::cout << "L2 pressed" << std::endl;
-    }
-
-    if (primaryController.ButtonUp.pressing()) {
-      std::cout << "Up pressed" << std::endl;
-    }
-
-    if (primaryController.ButtonDown.pressing()) {
-      std::cout << "Down pressed" << std::endl;
-    }
-
-    if (primaryController.ButtonLeft.pressing()) {
-      std::cout << "Left pressed" << std::endl;
-    }
-
-    if (primaryController.ButtonRight.pressing()) {
-      std::cout << "Right pressed" << std::endl;
-    }
-
-    if (primaryController.ButtonB.pressing()) {
-      std::cout << "B pressed" << std::endl;
-    }
-
-    if (primaryController.ButtonX.pressing()) {
-      std::cout << "X pressed" << std::endl;
-    }
-
-    if (primaryController.ButtonY.pressing()) {
-      std::cout << "Y pressed" << std::endl;
-    }
 
     // TODO: What the hell is moving left and right
 
