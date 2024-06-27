@@ -83,6 +83,25 @@ void autonomous(void) {
   return;
 }
 
+void displayMotorTemperature() {
+  primaryController.Screen.clearScreen();
+
+  primaryController.Screen.setCursor(1, 1);
+  primaryController.Screen.print("FL: %.1fC", frontLeftMotor.temperature(temperatureUnits::celsius));
+  primaryController.Screen.setCursor(2, 1);
+  primaryController.Screen.print("ML: %.1fC", middleLeftMotor.temperature(temperatureUnits::celsius));
+  primaryController.Screen.setCursor(3, 1);
+  primaryController.Screen.print("BL: %.1fC", backLeftMotor.temperature(temperatureUnits::celsius));
+  
+  primaryController.Screen.setCursor(4, 1);
+  primaryController.Screen.print("FR: %.1fC", frontRightMotor.temperature(temperatureUnits::celsius));
+  primaryController.Screen.setCursor(5, 1);
+  primaryController.Screen.print("MR: %.1fC", middleRightMotor.temperature(temperatureUnits::celsius));
+  primaryController.Screen.setCursor(6, 1);
+  primaryController.Screen.print("BR: %.1fC", backRightMotor.temperature(temperatureUnits::celsius));
+
+}
+
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                              User Control Task                            */
@@ -176,6 +195,7 @@ void usercontrol(void) {
 
     // TODO: What the hell is moving left and right
 
+    displayMotorTemperature();
     wait(20, msec); 
   }
 }
