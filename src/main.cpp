@@ -28,8 +28,9 @@ motor_group rightDrive(frontRightMotor, middleRightMotor, backRightMotor);
 motor_group leftDrive(frontLeftMotor, middleLeftMotor, backLeftMotor);
 
 controller primaryController;
+// inertial inertialSensor(PORT11, left);
 
-drivetrain driveTrain = drivetrain(leftDrive, rightDrive, 12.5664, 14, 13, inches, 1);
+drivetrain driveTrain = drivetrain(leftDrive, rightDrive, 13.3517, 15, 13.125, inches, 1);
 
 task lcdThread;
 bool lcdThreadRunning = false;
@@ -52,7 +53,10 @@ double driveVelocity = 100;
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
-
+  // inertialSensor.startCalibration();
+  // waitUntil(!inertialSensor.isCalibrating());
+  // inertialSensor.setHeading(0, degrees);
+  // inertialSensor.setRotation(0, degrees);
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
   return;
@@ -81,7 +85,14 @@ void autonomous(void) {
 
   driveTrain.driveFor(12, inches, true);
   driveTrain.stop();
-  driveTrain.turnFor(left, 110, degrees, true); // 55 degrees = 1/4 of circle
+
+  // inertialSensor.setHeading(0, degrees);
+  // driveTrain.turn(left);
+  // waitUntil(inertialSensor.yaw() < -90);
+  // driveTrain.stop();
+
+
+  driveTrain.turnFor(left, 55, degrees, true); // 55 degrees = 1/4 of circle
   driveTrain.driveFor(12, inches, true);
 
   // driveTrain.setTurnVelocity(100, percent);
