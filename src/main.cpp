@@ -31,12 +31,15 @@ controller primaryController;
 
 drivetrain driveTrain = drivetrain(leftDrive, rightDrive, 12.5664, 14, 13, inches, 1);
 
+task lcdThread;
+bool lcdThreadRunning = false;
+
+double turnVelocity = 75;
+double driveVelocity = 100;
+
 // 4 inch wheels
 // 14 inch distance between wheels
 // 13 inch wheel base
-
-
-
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -83,6 +86,31 @@ void autonomous(void) {
   return;
 }
 
+int displayMotorTemperature(void) {
+  while (true) {
+    primaryController.Screen.clearScreen();
+
+    primaryController.Screen.setCursor(1, 1);
+    primaryController.Screen.print("FL: %.1fC FR: %.1fC", frontLeftMotor.temperature(temperatureUnits::celsius), frontRightMotor.temperature(temperatureUnits::celsius));
+    primaryController.Screen.setCursor(2, 1);
+    primaryController.Screen.print("ML: %.1fC MR: %.1fC", middleLeftMotor.temperature(temperatureUnits::celsius), middleRightMotor.temperature(temperatureUnits::celsius));
+    primaryController.Screen.setCursor(3, 1);
+    primaryController.Screen.print("BL: %.1fC BR: %.1fC", backLeftMotor.temperature(temperatureUnits::celsius), backRightMotor.temperature(temperatureUnits::celsius));
+
+    task::sleep(5000);
+  }
+
+  return 0;
+}
+
+void updateVelocityScreen() {
+  primaryController.Screen.clearScreen();
+  primaryController.Screen.setCursor(1, 1);
+  primaryController.Screen.print("Drive Velocity: %.1f%%", driveVelocity);
+  primaryController.Screen.setCursor(2, 1);
+  primaryController.Screen.print("Turn Velocity: %.1f%%", turnVelocity);
+}
+
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                              User Control Task                            */
@@ -95,67 +123,78 @@ void autonomous(void) {
 
 // axis 3 forward and backward
 // axis 4 left and right
-// axis 2 up right, down left
+// axis 2 up left, down right
+
+// up arrow, up drive velocity, down arrow down drive velocity
+// left arrow, minus turn velocity, right arrow, plus turn velocity
+// 5 percent increments
 
 void usercontrol(void) {
   // User control code here, inside the loop
 
-  // Callback example
-  primaryController.ButtonA.pressed([]() {
-    std::cout << "A pressed" << std::endl;
-  });
+  
 
-  primaryController.ButtonB.pressed([]() {
-    std::cout << "B pressed" << std::endl;
-  });
+  // Callback example
+  // primaryController.ButtonA.pressed([]() {
+  //   std::cout << "A pressed" << std::endl;
+  // });
+
+  // primaryController.ButtonB.pressed([]() {
+  //   std::cout << "B pressed" << std::endl;
+  // });
 
   primaryController.ButtonX.pressed([]() {
-    std::cout << "X pressed" << std::endl;
+    if (lcdThreadRunning) {
+      lcdThread.stop();
+      lcdThreadRunning = false;
+    } else {
+      lcdThread = task(displayMotorTemperature);
+      lcdThreadRunning = true;
+    }
   });
 
-  primaryController.ButtonY.pressed([]() {
-    std::cout << "Y pressed" << std::endl;
-  });
+  // primaryController.ButtonY.pressed([]() {
+  //   std::cout << "Y pressed" << std::endl;
+  // });
 
-  primaryController.ButtonL1.pressed([]() {
-    std::cout << "L1 pressed" << std::endl;
-  });
+  // primaryController.ButtonL1.pressed([]() {
+  //   std::cout << "L1 pressed" << std::endl;
+  // });
 
-  primaryController.ButtonL2.pressed([]() {
-    std::cout << "L2 pressed" << std::endl;
-  });
+  // primaryController.ButtonL2.pressed([]() {
+  //   std::cout << "L2 pressed" << std::endl;
+  // });
 
-  primaryController.ButtonR1.pressed([]() {
-    std::cout << "R1 pressed" << std::endl;
-  });
-
-  primaryController.ButtonR2.pressed([]() {
-    std::cout << "R2 pressed" << std::endl;
-  });
+  // primaryController.ButtonR2.pressed([]() {
+  //   std::cout << "R2 pressed" << std::endl;
+  // });
 
   primaryController.ButtonUp.pressed([]() {
-    std::cout << "Up pressed" << std::endl;
+    driveVelocity += 5;
+    updateVelocityScreen();
   });
 
   primaryController.ButtonDown.pressed([]() {
-    std::cout << "Down pressed" << std::endl;
+    driveVelocity -= 5;
+    updateVelocityScreen();
   });
 
   primaryController.ButtonLeft.pressed([]() {
-    std::cout << "Left pressed" << std::endl;
+    turnVelocity -= 5;
+    updateVelocityScreen();
   });
 
   primaryController.ButtonRight.pressed([]() {
-    std::cout << "Right pressed" << std::endl;
+    turnVelocity += 5;
+    updateVelocityScreen();
   });
 
   while (1) {
     int axis2 = primaryController.Axis2.position();
     int axis3 = primaryController.Axis3.position();
-    int axis4 = primaryController.Axis4.position();
 
-    driveTrain.setDriveVelocity(abs(axis3), percent);
-    driveTrain.setTurnVelocity(abs(axis2), percent);
+    driveTrain.setDriveVelocity(abs(axis3) * (driveVelocity / 100), percent);
+    driveTrain.setTurnVelocity(abs(axis2) * (turnVelocity / 100), percent);
 
     if (axis3 > 0) {
       driveTrain.drive(forward);
@@ -164,21 +203,19 @@ void usercontrol(void) {
     }
 
     if (axis2 > 0) {
-      driveTrain.turn(right);
-    } else if (axis2 < 0) {
       driveTrain.turn(left);
+    } else if (axis2 < 0) {
+      driveTrain.turn(right);
     } 
 
-    if (axis2== 0 
-      && axis3 == 0
-      && axis3 == 0){
-      driveTrain.stop();
+    // make button y brake
+    if (primaryController.ButtonR1.pressing()) {
+      driveTrain.stop(brakeType::hold);
     }
-
 
     // TODO: What the hell is moving left and right
 
-    wait(20, msec); 
+    wait(10, msec); 
   }
 }
 
