@@ -31,6 +31,9 @@ controller primaryController;
 
 drivetrain driveTrain = drivetrain(leftDrive, rightDrive, 12.5664, 14, 13, inches, 1);
 
+task lcdThread;
+bool lcdThreadRunning = false;
+
 // 4 inch wheels
 // 14 inch distance between wheels
 // 13 inch wheel base
@@ -80,7 +83,7 @@ void autonomous(void) {
   return;
 }
 
-void displayMotorTemperature() {
+int displayMotorTemperature(void) {
   while (true) {
     primaryController.Screen.clearScreen();
 
@@ -91,8 +94,10 @@ void displayMotorTemperature() {
     primaryController.Screen.setCursor(3, 1);
     primaryController.Screen.print("BL: %.1fC BR: %.1fC", backLeftMotor.temperature(temperatureUnits::celsius), backRightMotor.temperature(temperatureUnits::celsius));
 
-    this_thread::sleep_for(5000);
+    task::sleep(5000);
   }
+
+  return 0;
 }
 
 /*---------------------------------------------------------------------------*/
@@ -109,6 +114,10 @@ void displayMotorTemperature() {
 // axis 4 left and right
 // axis 2 up left, down right
 
+// up arrow, up drive velocity, down arrow down drive velocity
+// left arrow, minus turn velocity, right arrow, plus turn velocity
+// 5 percent increments
+
 void usercontrol(void) {
   // User control code here, inside the loop
 
@@ -121,9 +130,15 @@ void usercontrol(void) {
   //   std::cout << "B pressed" << std::endl;
   // });
 
-  // primaryController.ButtonX.pressed([]() {
-  //   std::cout << "X pressed" << std::endl;
-  // });
+  primaryController.ButtonX.pressed([]() {
+    if (lcdThreadRunning) {
+      lcdThread.stop();
+      lcdThreadRunning = false;
+    } else {
+      lcdThread.resume();
+      lcdThreadRunning = true;
+    }
+  });
 
   // primaryController.ButtonY.pressed([]() {
   //   std::cout << "Y pressed" << std::endl;
@@ -162,7 +177,7 @@ void usercontrol(void) {
     int axis3 = primaryController.Axis3.position();
 
     driveTrain.setDriveVelocity(abs(axis3), percent);
-    driveTrain.setTurnVelocity(abs(axis2) / 2, percent);
+    driveTrain.setTurnVelocity(abs(axis2) * 0.85, percent);
 
     if (axis3 > 0) {
       driveTrain.drive(forward);
@@ -198,7 +213,8 @@ int main() {
   // Run the pre-autonomous function.
   pre_auton();
 
-  thread lcdThread(displayMotorTemperature);
+  lcdThread = task(displayMotorTemperature);
+  lcdThread.stop();
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
